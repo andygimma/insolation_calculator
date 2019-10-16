@@ -1,4 +1,5 @@
 import unittest
+from insolation_calculator import InsolationCalculator
 
 
 class InsolationCalculatorTest(unittest.TestCase):
