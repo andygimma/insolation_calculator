@@ -2,6 +2,7 @@ import numpy as np
 from climlab.solar.orbital import OrbitalTable
 from climlab.solar.insolation import daily_insolation
 from functools import reduce
+from multiprocessing import Process, Manager
 
 DAYS_IN_YEAR = 365
 YEARS_IN_SIMULATION = 20
@@ -18,16 +19,26 @@ class InsolationCalculator(object):
         i = daily_insolation(lat=self.latitude, day=day, orb=orb)
         return i.to_dict()['data']
 
+    def _append_daily_average(self, shared_list, day):
+        shared_list.append(self.daily_average(day))
+
     def daily_average(self, day):
         insolation_data = self._daily_insolation(day)
         acc = reduce((lambda x, y: x + y), insolation_data)
         return acc / len(insolation_data)
 
     def daily_average_for_year(self):
-        daily_insolation = []
-        for day in range(1, DAYS_IN_YEAR + 1):
-            daily_insolation.append(self.daily_average(day))
-        return daily_insolation
+        with Manager() as manager:
+            shared_list = manager.list()
+            processes = []
+            for day in range(1, DAYS_IN_YEAR + 1):
+                p = Process(target=(self._append_daily_average),
+                            args=(shared_list, day))
+                p.start()
+                processes.append(p)
+            for p in processes:
+                p.join()
+            return list(shared_list)
 
     def yearly_average(self):
         daily_insolation = self.daily_average_for_year()
