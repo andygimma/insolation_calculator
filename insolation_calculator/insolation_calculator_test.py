@@ -19,6 +19,7 @@ class InsolationCalculatorTest(unittest.TestCase):
         calc = InsolationCalculator(latitude=expected_latitude)
         returned_value = calc.calculate_days_average(day)
         self.assertTrue(type(returned_value) == list)
+        self.assertTrue(len(returned_value) > 0)
 
 
 if __name__ == '__main__':
