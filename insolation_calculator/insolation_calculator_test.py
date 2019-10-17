@@ -18,9 +18,7 @@ class InsolationCalculatorTest(unittest.TestCase):
         day = 1
         calc = InsolationCalculator(latitude=expected_latitude)
         returned_value = calc.calculate_days_average(day)
-        self.assertTrue(isinstance(
-            returned_value, xarray.core.dataarray.DataArray))
-        self.assertTrue(len(returned_value.to_dict()['data']) > 0)
+        self.assertTrue(type(returned_value) == list)
 
 
 if __name__ == '__main__':

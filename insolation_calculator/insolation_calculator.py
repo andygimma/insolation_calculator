@@ -12,6 +12,7 @@ class InsolationCalculator(object):
         self.temps = []
 
     def calculate_days_average(self, day):
-        years = np.linspace(-20, 0, 20)
+        years = np.linspace(-YEARS_IN_SIMULATION, 0, YEARS_IN_SIMULATION)
         orb = OrbitalTable.interp(kyear=years)
-        return daily_insolation(lat=self.latitude, day=day, orb=orb)
+        i = daily_insolation(lat=self.latitude, day=day, orb=orb)
+        return i.to_dict()['data']
