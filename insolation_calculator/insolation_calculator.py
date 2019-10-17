@@ -24,7 +24,12 @@ class InsolationCalculator(object):
         return acc / len(insolation_data)
 
     def daily_average_for_year(self):
-        daily_temps = []
+        daily_insolation = []
         for day in range(1, DAYS_IN_YEAR + 1):
-            daily_temps.append(self.daily_average(day))
-        return daily_temps
+            daily_insolation.append(self.daily_average(day))
+        return daily_insolation
+
+    def yearly_average(self):
+        daily_insolation = self.daily_average_for_year()
+        acc = reduce((lambda x, y: x + y), daily_insolation)
+        return acc / DAYS_IN_YEAR

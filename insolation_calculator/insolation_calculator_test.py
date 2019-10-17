@@ -38,6 +38,13 @@ class InsolationCalculatorTest(unittest.TestCase):
         self.assertTrue(type(returned_value) == list)
         self.assertTrue(len(returned_value) == DAYS_IN_YEAR)
 
+    def test_yearly_average(self):
+        expected_latitude = 0.1
+        calc = InsolationCalculator(latitude=expected_latitude)
+        returned_value = calc.yearly_average()
+        self.assertTrue(type(returned_value) == float)
+        self.assertTrue(returned_value > 0)
+
 
 if __name__ == '__main__':
     unittest.main()
