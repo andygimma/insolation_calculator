@@ -12,6 +12,8 @@ class InsolationCalculatorTest(unittest.TestCase):
         self.assertEqual(calc.latitude, expected_latitude)
 
     def test_calculate_days_average(self):
+        # NOTE These assertions are very specific to the climlab library
+        # and can be considered integration tests.
         expected_latitude = 0.1
         day = 1
         calc = InsolationCalculator(latitude=expected_latitude)
